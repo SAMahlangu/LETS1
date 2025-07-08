@@ -1,0 +1,294 @@
+{% extends "baseDriver.html" %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <!-- Navbar -->
+  <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+    <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+      <nav>
+        <!-- breadcrumb -->
+        <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+          <li class="text-sm leading-normal">
+            <a class="text-white opacity-50" href="javascript:;">Pages</a>
+          </li>
+          <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Job Cards</li>
+        </ol>
+        <h6 class="mb-0 font-bold text-white capitalize">Job Card Management</h6>
+      </nav>
+    </div>
+  </nav>
+
+  <div class="w-full px-6 py-6 mx-auto">
+<!-- <div class="container mx-auto px-4 py-8"> -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Job Card Details</h1>
+        <p class="text-gray-600">Job #{{ job_card.job_number }}</p>
+      </div>
+      <a href="{{ url_for('driver_routes.driver_job_cards') }}" 
+         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Job Cards
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Job Information -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Job Overview -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">{{ job_card.job_number }}</h2>
+            <p class="text-sm text-gray-600">{{ job_card.pickup_location }} → {{ job_card.delivery_location }}</p>
+          </div>
+          <span class="px-3 py-1 text-xs rounded-full 
+            {% if job_card.status == 'assigned' %}bg-blue-100 text-blue-800
+            {% elif job_card.status == 'in_progress' %}bg-yellow-100 text-yellow-800
+            {% elif job_card.status == 'picked_up' %}bg-orange-100 text-orange-800
+            {% elif job_card.status == 'in_transit' %}bg-purple-100 text-purple-800
+            {% elif job_card.status == 'delivered' %}bg-green-100 text-green-800
+            {% elif job_card.status == 'cancelled' %}bg-red-100 text-red-800
+            {% else %}bg-gray-100 text-gray-800{% endif %}">
+            {{ job_card.status|replace('_', ' ')|title }}
+          </span>
+        </div>
+
+        <!-- Cargo Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          
+          
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900 mb-2">Timing Information</h3>
+            <div class="space-y-2">
+              <div>
+                <p class="text-xs text-gray-500">Pickup Time</p>
+                <p class="text-sm font-medium">{{ job_card.pickup_time.strftime('%Y-%m-%d %H:%M') if job_card.pickup_time else 'N/A' }}</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500">Estimated Arrival</p>
+                <p class="text-sm font-medium">{{ job_card.estimated_arrival_time.strftime('%Y-%m-%d %H:%M') if job_card.estimated_arrival_time else 'N/A' }}</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500">Created</p>
+                <p class="text-sm font-medium">{{ job_card.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Instructions & Notes -->
+        {% if job_card.special_instructions or job_card.notes %}
+        <div class="border-t pt-4">
+          {% if job_card.special_instructions %}
+          <div class="mb-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-2">Special Instructions</h3>
+            <p class="text-sm text-gray-700 bg-yellow-50 p-3 rounded-lg">{{ job_card.special_instructions }}</p>
+          </div>
+          {% endif %}
+          
+          {% if job_card.notes %}
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900 mb-2">Notes</h3>
+            <p class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">{{ job_card.notes }}</p>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Notes & Instructions Section -->
+      {% if job_card.special_instructions or job_card.notes %}
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">
+          <i class="fas fa-clipboard-list mr-2 text-blue-600"></i>
+          Notes & Instructions
+        </h2>
+        
+        <div class="space-y-4">
+          {% if job_card.special_instructions %}
+          <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg">
+            <div class="flex items-start">
+              <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
+              <div>
+                <h3 class="font-semibold text-yellow-800 mb-2">Special Instructions</h3>
+                <p class="text-sm text-yellow-700 leading-relaxed">{{ job_card.special_instructions }}</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          
+          {% if job_card.notes %}
+          <div class="border-l-4 border-blue-400 bg-blue-50 p-4 rounded-r-lg">
+            <div class="flex items-start">
+              <i class="fas fa-sticky-note text-blue-600 mt-1 mr-3"></i>
+              <div>
+                <h3 class="font-semibold text-blue-800 mb-2">Additional Notes</h3>
+                <p class="text-sm text-blue-700 leading-relaxed">{{ job_card.notes }}</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Fuel Delivery Actions -->
+      {% if companies %}
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">
+          <i class="fas fa-gas-pump mr-2 text-green-600"></i>
+          Fuel Delivery Actions
+        </h2>
+        
+        <div class="space-y-4">
+          {% for company_info in companies %}
+            {% if company_info.fuel_type and not company_info.has_delivery %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-gray-900">{{ company_info.company.name }}</h3>
+                  <p class="text-sm text-gray-600">Fuel Type: {{ company_info.fuel_type }}</p>
+                  <p class="text-xs text-gray-500">Delivery Order: {{ company_info.delivery_order }}</p>
+                </div>
+                <a href="{{ url_for('driver_routes.fuel_delivery_form', job_card_id=job_card.id, company_id=company_info.company.id) }}" 
+                   class="bg-green-600 text-black px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  <i class="fas fa-camera mr-2"></i>Submit Fuel Delivery
+                </a>
+                <a href="{{ url_for('driver_routes.company_map', company_id=company_info.company.id, job_card_id=job_card.id) }}"
+                   class="bg-blue-100 text-black px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  <i class="fas fa-map-marker-alt mr-2"></i>View Location
+                </a>
+              </div>
+            </div>
+            {% elif company_info.fuel_type and company_info.has_delivery %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-gray-900">{{ company_info.company.name }}</h3>
+                  <p class="text-sm text-gray-600">Fuel Type: {{ company_info.fuel_type }}</p>
+                  <p class="text-xs text-gray-500">Delivery Order: {{ company_info.delivery_order }}</p>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                  <span class="text-sm font-medium text-green-600">Completed</span>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Vehicle Information -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Vehicle Information</h2>
+        
+        <div class="space-y-4">
+          <!-- Car Details -->
+          <div>
+            <h3 class="text-sm font-medium text-gray-900 mb-2">Assigned Car</h3>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <p class="font-medium text-sm">{{ car.model }}</p>
+              <p class="text-xs text-gray-600">{{ car.registration_number }}</p>
+              <p class="text-xs text-gray-500">Year: {{ car.year or 'N/A' }}</p>
+              <p class="text-xs text-gray-500">Capacity: {{ car.capacity or 'N/A' }} tons</p>
+              <p class="text-xs text-gray-500">Fuel Type: {{ car.fuel_type or 'N/A' }}</p>
+            </div>
+          </div>
+
+          <!-- Trailer Details -->
+          {% if trailer %}
+          <div>
+            <h3 class="text-sm font-medium text-gray-900 mb-2">Assigned Trailer</h3>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <p class="font-medium text-sm">{{ trailer.model }}</p>
+              <p class="text-xs text-gray-600">{{ trailer.registration_number }}</p>
+              <p class="text-xs text-gray-500">Type: {{ trailer.trailer_type or 'N/A' }}</p>
+              <p class="text-xs text-gray-500">Capacity: {{ trailer.capacity or 'N/A' }} tons</p>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Company Fuel Information -->
+          {% if companies %}
+          <div>
+            <h3 class="text-sm font-medium text-gray-900 mb-2">Company Fuel Requirements</h3>
+            <div class="space-y-2">
+              {% for company_info in companies %}
+                {% if company_info.fuel_type %}
+                <div class="bg-gray-50 p-3 rounded-lg">
+                  <p class="font-medium text-sm">{{ company_info.company.name }}</p>
+                  <p class="text-xs text-green-600">
+                    <i class="fas fa-gas-pump mr-1"></i>Fuel: {{ company_info.fuel_type }}
+                  </p>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Financial Information -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Financial Details</h2>
+        
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Total Distance</span>
+            <span class="text-sm font-medium">{{ job_card.total_distance or 'N/A' }} km</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Fuel Consumed</span>
+            <span class="text-sm font-medium">{{ job_card.fuel_consumed or 'N/A' }} liters</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Total Cost</span>
+            <span class="text-sm font-medium">${{ job_card.total_cost or 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Timeline -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Job Status</h2>
+        
+        <div class="space-y-3">
+          <div class="flex items-center">
+            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+            <span class="text-sm">Job Created</span>
+            <span class="text-xs text-gray-500 ml-auto">{{ job_card.created_at.strftime('%Y-%m-%d') }}</span>
+          </div>
+          
+          {% if job_card.actual_pickup_time %}
+          <div class="flex items-center">
+            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+            <span class="text-sm">Picked Up</span>
+            <span class="text-xs text-gray-500 ml-auto">{{ job_card.actual_pickup_time.strftime('%Y-%m-%d') }}</span>
+          </div>
+          {% endif %}
+          
+          {% if job_card.actual_delivery_time %}
+          <div class="flex items-center">
+            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+            <span class="text-sm">Delivered</span>
+            <span class="text-xs text-gray-500 ml-auto">{{ job_card.actual_delivery_time.strftime('%Y-%m-%d') }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</main>
+
+
+{% endblock %} 

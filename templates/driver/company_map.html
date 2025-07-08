@@ -1,0 +1,26 @@
+{% extends "baseDriver.html" %}
+
+{% block title %}Company Location - KFactor{% endblock %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <div class="w-full px-6 py-6 mx-auto">
+    <h2 class="text-xl font-bold mb-4">{{ company.name }} Location</h2>
+    <p class="mb-2 text-gray-700"><strong>Address:</strong> {{ company.address }}</p>
+    <div class="w-full h-96 rounded-lg overflow-hidden border">
+      <iframe
+        width="100%"
+        height="100%"
+        frameborder="0"
+        style="border:0"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed/v1/place?key={{ config.GOOGLE_MAPS_API_KEY }}&q={{ company.address|urlencode }}"
+        allowfullscreen>
+      </iframe>
+    </div>
+    {% if request.args.get('job_card_id') %}
+    <a href="{{ url_for('driver_routes.driver_job_card_detail', job_card_id=request.args.get('job_card_id')) }}" class="mt-4 inline-block text-blue-600 hover:underline">Back to Job Card</a>
+    {% endif %}
+  </div>
+</main>
+{% endblock %} 

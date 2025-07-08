@@ -1,0 +1,90 @@
+{% extends "_base.html" %}
+
+{% block title %}Edit Job Card - KFactor{% endblock %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <div class="w-full px-6 py-6 mx-auto">
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full max-w-full px-3 mt-6 lg:w-2/3 lg:flex-none">
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+          <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+            <div class="flex flex-wrap -mx-3">
+              <div class="w-full max-w-full px-3 flex-0">
+                <h6 class="mb-0 font-bold dark:text-white">Edit Job Card</h6>
+                <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                  Update details for the job card
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex-auto p-4">
+            <form method="POST" action="{{ url_for('superadmin_routes.edit_job_card', job_card_id=job_card.id) }}">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Job Number *</label>
+                  <input type="text" name="job_number" value="{{ request.form.get('job_number', job_card.job_number) }}" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="e.g., JOB-001">
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Driver *</label>
+                  <select name="driver_id" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                    <option value="">Select driver</option>
+                    {% for emp in employees %}
+                      <option value="{{ emp.id }}" {% if request.form.get('driver_id', job_card.driver_id)|int == emp.id %}selected{% endif %}>{{ emp.first_name }} {{ emp.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Car *</label>
+                  <select name="car_id" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                    <option value="">Select car</option>
+                    {% for car in cars %}
+                      <option value="{{ car.id }}" {% if request.form.get('car_id', job_card.car_id)|int == car.id %}selected{% endif %}>{{ car.model }} ({{ car.registration_number }})</option>
+                    {% endfor %}
+                  </select>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Trailer</label>
+                  <select name="trailer_id" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                    <option value="">No trailer</option>
+                    {% for trailer in trailers %}
+                      <option value="{{ trailer.id }}" {% if request.form.get('trailer_id', job_card.trailer_id)|int == trailer.id %}selected{% endif %}>{{ trailer.model }} ({{ trailer.registration_number }})</option>
+                    {% endfor %}
+                  </select>
+
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Estimated Arrival Time</label>
+                  <input type="datetime-local" name="estimated_arrival_time" value="{{ request.form.get('estimated_arrival_time', job_card.estimated_arrival_time.strftime('%Y-%m-%dT%H:%M') if job_card.estimated_arrival_time else '') }}" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Status</label>
+                  <select name="status" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                    <option value="assigned" {% if request.form.get('status', job_card.status) == 'assigned' %}selected{% endif %}>Assigned</option>
+                    <option value="in_progress" {% if request.form.get('status', job_card.status) == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="delivered" {% if request.form.get('status', job_card.status) == 'delivered' %}selected{% endif %}>Delivered</option>
+                  </select>
+                </div>
+                <div class="space-y-4">
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Companies (with Delivery Order & Fuel Type)</label>
+                  <div class="space-y-2">
+                    {% for company in companies %}
+                      <div class="flex items-center space-x-2 p-2 border border-slate-200 rounded-lg">
+                        <input type="checkbox" name="company_ids" value="{{ company.id }}" id="company_{{ company.id }}"
+                        {% for jc in job_card.job_card_companies %}{% if jc.company_id == company.id %}checked{% endif %}{% endfor %}>
+                        <label for="company_{{ company.id }}" class="text-sm font-medium">{{ company.name }}</label>
+                        <input type="number" name="delivery_orders" min="1" class="w-20 px-2 py-1 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="Order"
+                        value="{% for jc in job_card.job_card_companies %}{% if jc.company_id == company.id %}{{ jc.delivery_order }}{% endif %}{% endfor %}">
+                        <select name="fuel_types" class="w-32 px-2 py-1 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                          <option value="">No Fuel</option>
+                          {% for fuel in fuels %}
+                            <option value="{{ fuel.name }}" {% for jc in job_card.job_card_companies %}{% if jc.company_id == company.id and jc.fuel_type == fuel.name %}selected{% endif %}{% endfor %}>{{ fuel.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+                <a href="{{ url_for('superadmin_routes.manage_job_cards') }}" class="px-6 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white dark:border-slate-600 dark:hover:bg-slate-700">Cancel</a>
+                <button type="submit" class="px-6 py-2 text-sm font-medium text-white bg-gradient-to-tl from-blue-500 to-violet-500 border border-transparent rounded-lg hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">Update Job Card</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %} 

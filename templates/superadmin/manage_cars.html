@@ -1,0 +1,277 @@
+{% extends "_base.html" %}
+
+{% block title %}Manage Cars - KFactor{% endblock %}
+
+{% block content %}
+
+  <!-- Floating Action Button -->
+
+   
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+    <!-- Navbar -->
+    <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+      <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+        <nav>
+          <!-- breadcrumb -->
+          <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <li class="text-sm leading-normal">
+              <a class="text-white opacity-50" href="javascript:;">Pages</a>
+            </li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Cars</li>
+          </ol>
+          <h6 class="mb-0 font-bold text-white capitalize">Cars Management</h6>
+        </nav>
+
+        <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+          <div class="flex items-center md:ml-auto md:pr-4">
+            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
+              <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
+            </div>
+          </div>
+          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+            <li class="flex items-center pl-4 xl:hidden">
+              <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
+                <div class="w-4.5 overflow-hidden">
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                </div>
+              </a>
+            </li>
+            <li class="flex items-center px-4">
+              <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
+                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full px-6 py-6 mx-auto">
+              
+        <!-- Cars Management Section -->
+        <div class="flex flex-wrap -mx-3">
+          <!-- Cars List Card -->
+          <div class="w-full max-w-full px-3 mt-6 lg:w-2/3 lg:flex-none">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+              <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+                <div class="flex flex-wrap -mx-3">
+                  <div class="w-full max-w-full px-3 flex-0">
+                    <h6 class="mb-0 font-bold dark:text-white">Fleet Cars</h6>
+                    <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                      View and manage all fleet vehicles
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-auto p-4">
+                <div class="overflow-x-auto">
+                  <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <thead class="align-bottom">
+                      <tr>
+                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Car
+                        </th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Registration</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Year</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Capacity</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Status</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if cars %}
+                        {% for car in cars %}
+                        <tr>
+                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex px-2 py-1">
+                              <div>
+                                <img src="{{ url_for('static', filename='assets/img/car-icon.png') }}" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-soft-in-out h-9 w-9 rounded-xl" alt="car" />
+                              </div>
+                              <div class="flex flex-col justify-center">
+                                <h6 class="mb-0 text-sm leading-normal dark:text-white">{{ car.model }}</h6>
+                                <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60 text-slate-400">
+                                  {{ car.fuel_type or 'N/A' }}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">{{ car.registration_number }}</p>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">{{ car.year or 'N/A' }}</p>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">{{ car.capacity or 'N/A' }}</p>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            {% if car.is_active %}
+                              <span class="bg-gradient-to-tl from-green-500 to-emerald-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                Active
+                              </span>
+                            {% else %}
+                              <span class="bg-gradient-to-tl from-red-500 to-pink-500 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                Inactive
+                              </span>
+                            {% endif %}
+                          </td>
+                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex space-x-2 justify-center">
+                              <a href="{{ url_for('superadmin_routes.edit_car', car_id=car.id) }}" class="text-xs font-semibold leading-tight text-blue-500 hover:text-blue-700 transition-colors" title="Edit">
+                                <i class="fas fa-pencil text-xs" aria-hidden="true"></i>
+                              </a>
+                              <a href="{{ url_for('superadmin_routes.car_service_history', car_id=car.id) }}" class="text-xs font-semibold leading-tight text-green-500 hover:text-green-700 transition-colors" title="Service History">
+                                <i class="fas fa-tools text-xs" aria-hidden="true"></i>
+                              </a>
+                              <button onclick="deleteCar({{ car.id }})" class="text-xs font-semibold leading-tight text-red-500 hover:text-red-700 transition-colors" title="Delete">
+                                <i class="fas fa-trash text-xs" aria-hidden="true"></i>View
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      {% else %}
+                        <tr>
+                          <td colspan="6" class="p-4 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex flex-col items-center justify-center py-8">
+                              <i class="fas fa-car text-4xl text-slate-300 mb-4"></i>
+                              <p class="text-slate-500 dark:text-white dark:opacity-60">No cars found</p>
+                              <p class="text-xs text-slate-400 mt-2">Add cars to see them here</p>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Statistics Card -->
+          <div class="w-full max-w-full px-3 mt-6 lg:w-1/3 lg:flex-none">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+              <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+                <div class="flex flex-wrap -mx-3">
+                  <div class="w-full max-w-full px-3 flex-0">
+                    <h6 class="mb-0 font-bold dark:text-white">Fleet Statistics</h6>
+                    <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                      Overview of fleet vehicles
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-auto p-4">
+                <div class="space-y-6">
+                  <!-- Total Cars -->
+                  <div class="flex items-center justify-between p-4 bg-gradient-to-tl from-blue-500 to-violet-500 rounded-lg text-white">
+                    <div>
+                      <p class="text-sm opacity-80">Total Cars</p>
+                      <h4 class="text-2xl font-bold">{{ cars|length if cars else 0 }}</h4>
+                    </div>
+                    <div class="text-3xl opacity-80">
+                      <i class="fas fa-car"></i>
+                    </div>
+                  </div>
+      
+                  <!-- Active Cars -->
+                  <div class="flex items-center justify-between p-4 bg-gradient-to-tl from-emerald-500 to-teal-400 rounded-lg text-white">
+                    <div>
+                      <p class="text-sm opacity-80">Active Cars</p>
+                      <h4 class="text-2xl font-bold">
+                        {% if cars %}
+                          {{ cars|selectattr('is_active', 'equalto', true)|list|length }}
+                        {% else %}
+                          0
+                        {% endif %}
+                      </h4>
+                    </div>
+                    <div class="text-3xl opacity-80">
+                      <i class="fas fa-car-side"></i>
+                    </div>
+                  </div>
+      
+                  <!-- Inactive Cars -->
+                  <div class="flex items-center justify-between p-4 bg-gradient-to-tl from-orange-500 to-yellow-500 rounded-lg text-white">
+                    <div>
+                      <p class="text-sm opacity-80">Inactive Cars</p>
+                      <h4 class="text-2xl font-bold">
+                        {% if cars %}
+                          {{ cars|selectattr('is_active', 'equalto', false)|list|length }}
+                        {% else %}
+                          0
+                        {% endif %}
+                      </h4>
+                    </div>
+                    <div class="text-3xl opacity-80">
+                      <i class="fas fa-car-crash"></i>
+                    </div>
+                  </div>
+      
+                  <!-- Quick Actions -->
+                  <div class="space-y-3">
+                    <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Quick Actions</h6>
+                    
+                    <a href="{{ url_for('superadmin_routes.add_car') }}" class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-car text-blue-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Add Car</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
+                    </a>
+      
+                    <a href="{{ url_for('superadmin_routes.manage_cars') }}" class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-cogs text-green-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Manage Cars</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+
+<script>
+function deleteCar(carId) {
+    if (confirm('Are you sure you want to delete this car? This action cannot be undone.')) {
+        fetch(`/super_admin/delete-car/${carId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error deleting car: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting car');
+        });
+    }
+}
+</script>
+{% endblock %} 

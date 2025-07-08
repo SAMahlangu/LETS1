@@ -1,0 +1,240 @@
+{% extends "_base_admin.html" %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <!-- Navbar -->
+  <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+    <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+      <nav>
+        <!-- breadcrumb -->
+        <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+          <li class="text-sm leading-normal">
+            <a class="text-white opacity-50" href="javascript:;">Pages</a>
+          </li>
+          <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Profile</li>
+        </ol>
+        <h6 class="mb-0 font-bold text-white capitalize">Admin Profile</h6>
+      </nav>
+    </div>
+  </nav>
+
+  <div class="w-full px-6 py-6 mx-auto">
+    <div class="flex flex-wrap -mx-3">
+      <div class="w-full max-w-full px-3 mt-0 lg:w-4/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <div class="flex flex-wrap -mx-3">
+              <div class="w-full max-w-full px-3 flex-0 lg:w-7/12 lg:flex-none">
+                <h6 class="mb-0 dark:text-white">Profile Information</h6>
+                <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                  Hi, I'm {{ current_user.employee.first_name if current_user.employee else current_user.username }}
+                </p>
+              </div>
+              <div class="w-full max-w-full px-3 text-right flex-0 lg:w-5/12 lg:flex-none">
+                <a href="javascript:;" class="inline-block px-8 py-2 mb-0 text-xs font-bold leading-normal text-center text-white uppercase align-middle transition-all ease-in bg-white border-0 rounded-lg shadow-md cursor-pointer bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs tracking-tight-soft bg-black bg-gradient-to-tl from-black to-slate-800 hover:from-black hover:to-slate-800 hover:shadow-soft-2xl">
+                  Edit
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="flex-auto p-4 pt-0">
+            <hr class="h-px mx-0 my-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent">
+            <div class="flex flex-wrap -mx-3">
+              <div class="w-full max-w-full px-3 flex-0 lg:w-7/12 lg:flex-none">
+                <h6 class="mb-4 dark:text-white">Contact Information</h6>
+                <div class="mb-4">
+                  <p class="mb-2 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Name:</p>
+                  <p class="mb-0 text-sm leading-normal dark:text-white">
+                    {{ current_user.employee.first_name }} {{ current_user.employee.last_name if current_user.employee else 'N/A' }}
+                  </p>
+                </div>
+                <div class="mb-4">
+                  <p class="mb-2 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Email:</p>
+                  <p class="mb-0 text-sm leading-normal dark:text-white">
+                    {{ current_user.employee.email if current_user.employee else 'N/A' }}
+                  </p>
+                </div>
+                <div class="mb-4">
+                  <p class="mb-2 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Phone:</p>
+                  <p class="mb-0 text-sm leading-normal dark:text-white">
+                    {{ current_user.employee.phone if current_user.employee else 'N/A' }}
+                  </p>
+                </div>
+                <div class="mb-4">
+                  <p class="mb-2 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Role:</p>
+                  <p class="mb-0 text-sm leading-normal dark:text-white">
+                    {{ current_user.role|replace('_', ' ')|title }}
+                  </p>
+                </div>
+              </div>
+              <div class="w-full max-w-full px-3 flex-0 lg:w-5/12 lg:flex-none">
+                <h6 class="mb-4 dark:text-white">Profile Picture</h6>
+                <div class="flex items-center">
+                  <div class="inline-block w-20 h-20 mr-4 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
+                    <i class="ni leading-none ni-single-02 text-lg relative top-3.5 text-white"></i>
+                  </div>
+                  <div>
+                    <h6 class="dark:text-white">{{ current_user.employee.first_name if current_user.employee else current_user.username }}</h6>
+                    <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60">Administrator</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full max-w-full px-3 mt-6 lg:w-8/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <h6 class="capitalize dark:text-white">Profile Overview</h6>
+            <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+              <i class="fa fa-arrow-up text-emerald-500"></i>
+              <span class="font-semibold">Administrator profile</span> information and settings
+            </p>
+          </div>
+          <div class="flex-auto p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Personal Information -->
+              <div>
+                <h6 class="mb-4 text-sm font-semibold leading-tight dark:text-white dark:opacity-60">Personal Information</h6>
+                <div class="space-y-3">
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Employee ID:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.employee_id if current_user.employee else 'N/A' }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Date of Birth:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.date_of_birth.strftime('%Y-%m-%d') if current_user.employee and current_user.employee.date_of_birth else 'N/A' }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Hire Date:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.hire_date.strftime('%Y-%m-%d') if current_user.employee and current_user.employee.hire_date else 'N/A' }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Status:</p>
+                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                      {{ 'Active' if current_user.employee and current_user.employee.is_active else 'Inactive' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Emergency Contact -->
+              <div>
+                <h6 class="mb-4 text-sm font-semibold leading-tight dark:text-white dark:opacity-60">Emergency Contact</h6>
+                <div class="space-y-3">
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Next of Kin:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.next_of_kin_name if current_user.employee else 'N/A' }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Relationship:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.next_of_kin_relationship if current_user.employee else 'N/A' }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Phone:</p>
+                    <p class="text-sm dark:text-white">{{ current_user.employee.next_of_kin_phone if current_user.employee else 'N/A' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-wrap gap-3">
+              <button onclick="openChangePasswordModal()" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-500 to-violet-500 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                Change Password
+              </button>
+              <button class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-rose-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                Edit Profile
+              </button>
+              <button class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-emerald-500 to-teal-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                Download Documents
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+    <div class="relative w-full max-w-md bg-white rounded-lg shadow-xl">
+      <div class="flex items-center justify-between p-6 border-b">
+        <h3 class="text-lg font-semibold text-gray-900">Change Password</h3>
+        <button onclick="closeChangePasswordModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="changePasswordForm" method="POST" action="{{ url_for('admin_routes.change_password') }}">
+        <div class="p-6 space-y-4">
+          <div>
+            <label for="current_password" class="block text-sm font-medium text-gray-700">Current Password</label>
+            <input type="password" id="current_password" name="current_password" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          <div>
+            <label for="new_password" class="block text-sm font-medium text-gray-700">New Password</label>
+            <input type="password" id="new_password" name="new_password" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          <div>
+            <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          </div>
+        </div>
+        <div class="flex items-center justify-end p-6 border-t space-x-3">
+          <button type="button" onclick="closeChangePasswordModal()"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+            Cancel
+          </button>
+          <button type="submit"
+                  class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Change Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openChangePasswordModal() {
+  document.getElementById('changePasswordModal').classList.remove('hidden');
+}
+
+function closeChangePasswordModal() {
+  document.getElementById('changePasswordModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('changePasswordModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeChangePasswordModal();
+  }
+});
+
+// Form validation
+document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+  const newPassword = document.getElementById('new_password').value;
+  const confirmPassword = document.getElementById('confirm_password').value;
+  
+  if (newPassword !== confirmPassword) {
+    e.preventDefault();
+    alert('New passwords do not match!');
+    return false;
+  }
+  
+  if (newPassword.length < 6) {
+    e.preventDefault();
+    alert('Password must be at least 6 characters long!');
+    return false;
+  }
+});
+</script>
+{% endblock %} 

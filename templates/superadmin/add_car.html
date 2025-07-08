@@ -1,0 +1,209 @@
+{% extends "_base.html" %}
+
+{% block title %}Add Car - KFactor{% endblock %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+    <!-- Navbar -->
+    <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+      <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+        <nav>
+          <!-- breadcrumb -->
+          <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <li class="text-sm leading-normal">
+              <a class="text-white opacity-50" href="javascript:;">Pages</a>
+            </li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Add Car</li>
+          </ol>
+          <h6 class="mb-0 font-bold text-white capitalize">Add New Car</h6>
+        </nav>
+
+        <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+          <div class="flex items-center md:ml-auto md:pr-4">
+            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
+              <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
+            </div>
+          </div>
+          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+            <li class="flex items-center pl-4 xl:hidden">
+              <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
+                <div class="w-4.5 overflow-hidden">
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                </div>
+              </a>
+            </li>
+            <li class="flex items-center px-4">
+              <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
+                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+<div class="w-full px-6 py-6 mx-auto">
+  
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="w-full max-w-full px-3 mt-6">
+        {% for category, message in messages %}
+          <div class="p-4 mb-4 rounded-lg {% if category == 'error' %}bg-red-100 border border-red-400 text-red-700{% else %}bg-green-100 border border-green-400 text-green-700{% endif %}">
+            <div class="flex items-center">
+              <i class="fas {% if category == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Add Car Form -->
+  <div class="flex flex-wrap -mx-3">
+    <div class="w-full max-w-full px-3 mt-6 lg:w-2/3 lg:flex-none">
+      <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+        <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+          <div class="flex flex-wrap -mx-3">
+            <div class="w-full max-w-full px-3 flex-0">
+              <h6 class="mb-0 font-bold dark:text-white">Car Information</h6>
+              <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                Fill in the car details below
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex-auto p-4">
+          <form method="POST" action="{{ url_for('superadmin_routes.add_car') }}">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Basic Information -->
+              <div class="space-y-4">
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white mb-4">Basic Information</h6>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Model *</label>
+                  <input type="text" name="model" value="{{ request.form.get('model', '') }}" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="e.g., Toyota Hilux">
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Registration Number *</label>
+                  <input type="text" name="registration_number" value="{{ request.form.get('registration_number', '') }}" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="e.g., ABC 123 GP">
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Year *</label>
+                  <input type="number" name="year" value="{{ request.form.get('year', '') }}" min="1900" max="2030" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="2023">
+                </div>
+              </div>
+              
+              <!-- Specifications -->
+              <div class="space-y-4">
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white mb-4">Specifications</h6>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Capacity (tons)</label>
+                  <input type="number" name="capacity" value="{{ request.form.get('capacity', '') }}" step="0.01" min="0" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white" placeholder="2.5">
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-white mb-2">Fuel Type</label>
+                  <select name="fuel_type" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:border-slate-700 dark:text-white">
+                    <option value="">Select fuel type</option>
+                    <option value="Petrol" {% if request.form.get('fuel_type') == 'Petrol' %}selected{% endif %}>Petrol</option>
+                    <option value="Diesel" {% if request.form.get('fuel_type') == 'Diesel' %}selected{% endif %}>Diesel</option>
+                    <option value="Electric" {% if request.form.get('fuel_type') == 'Electric' %}selected{% endif %}>Electric</option>
+                    <option value="Hybrid" {% if request.form.get('fuel_type') == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                    <option value="LPG" {% if request.form.get('fuel_type') == 'LPG' %}selected{% endif %}>LPG</option>
+                  </select>
+                </div>
+                
+                <div class="flex items-center">
+                  <input type="checkbox" name="is_active" value="1" {% if request.form.get('is_active') %}checked{% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label class="ml-2 text-sm font-medium text-slate-700 dark:text-white">Active Vehicle</label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <a href="{{ url_for('superadmin_routes.manage_cars') }}" class="px-6 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white dark:border-slate-600 dark:hover:bg-slate-700">
+                Cancel
+              </a>
+              <button type="submit" class="px-6 py-2 text-sm font-medium text-white bg-gradient-to-tl from-blue-500 to-violet-500 border border-transparent rounded-lg hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                Add Car
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Information Card -->
+    <div class="w-full max-w-full px-3 mt-6 lg:w-1/3 lg:flex-none">
+      <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+        <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+          <div class="flex flex-wrap -mx-3">
+            <div class="w-full max-w-full px-3 flex-0">
+              <h6 class="mb-0 font-bold dark:text-white">Information</h6>
+              <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                Important notes about adding cars
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex-auto p-4">
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-info text-blue-600 text-xs"></i>
+              </div>
+              <div>
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Registration Number</h6>
+                <p class="text-xs text-slate-600 dark:text-white dark:opacity-60">Must be unique across the fleet</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-check text-green-600 text-xs"></i>
+              </div>
+              <div>
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Vehicle Management</h6>
+                <p class="text-xs text-slate-600 dark:text-white dark:opacity-60">Track maintenance and service history</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="flex-shrink-0 w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-exclamation text-yellow-600 text-xs"></i>
+              </div>
+              <div>
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Required Fields</h6>
+                <p class="text-xs text-slate-600 dark:text-white dark:opacity-60">Fields marked with * are required</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-car text-purple-600 text-xs"></i>
+              </div>
+              <div>
+                <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Fleet Integration</h6>
+                <p class="text-xs text-slate-600 dark:text-white dark:opacity-60">Car will be available for job assignments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+{% endblock %} 

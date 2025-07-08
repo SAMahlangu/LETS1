@@ -1,0 +1,323 @@
+{% extends "_base.html" %}
+
+{% block title %}Fuel Delivery Details - KFactor{% endblock %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <!-- Navbar -->
+  <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+    <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+      <nav>
+        <!-- breadcrumb -->
+        <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+          <li class="text-sm leading-normal">
+            <a class="text-white opacity-50" href="javascript:;">Pages</a>
+          </li>
+          <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Fuel Delivery</li>
+        </ol>
+        <h6 class="mb-0 font-bold text-white capitalize">Fuel Delivery Details</h6>
+      </nav>
+    </div>
+  </nav>
+
+  <div class="w-full px-6 py-6 mx-auto">
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Fuel Delivery Details</h1>
+          <p class="text-gray-600">Job #{{ fuel_delivery.job_card.job_number if fuel_delivery.job_card else 'N/A' }} - {{ fuel_delivery.company_name }}</p>
+        </div>
+        <a href="{{ url_for('superadmin_routes.manage_fuel_deliveries') }}" 
+           class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Fuel Deliveries
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Delivery Information -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">Delivery Information</h2>
+        
+        <div class="space-y-6">
+          <!-- Job Card Details -->
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Job Card Details</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Job Number:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.job_number if fuel_delivery.job_card else 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Driver:</span>
+                <span class="text-sm font-medium">
+                  {% if fuel_delivery.driver %}
+                    {{ fuel_delivery.driver.first_name }} {{ fuel_delivery.driver.last_name }}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Status:</span>
+                <span class="px-2 py-1 text-xs rounded-full 
+                  {% if fuel_delivery.job_card and fuel_delivery.job_card.status == 'assigned' %}bg-blue-100 text-blue-800
+                  {% elif fuel_delivery.job_card and fuel_delivery.job_card.status == 'in_progress' %}bg-yellow-100 text-yellow-800
+                  {% elif fuel_delivery.job_card and fuel_delivery.job_card.status == 'delivered' %}bg-green-100 text-green-800
+                  {% else %}bg-gray-100 text-gray-800{% endif %}">
+                  {{ fuel_delivery.job_card.status|replace('_', ' ')|title if fuel_delivery.job_card else 'N/A' }}
+                </span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Pickup Location:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.pickup_location if fuel_delivery.job_card else 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Delivery Location:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.delivery_location if fuel_delivery.job_card else 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Created:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.created_at.strftime('%Y-%m-%d %H:%M') if fuel_delivery.job_card else 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company Details -->
+          <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Company Details</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Company:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.company_name }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Address:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.company.address or 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Contact Person:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.company.contact_person or 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Phone:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.company.phone or 'N/A' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Email:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.company.email or 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Employee Information -->
+          {% if fuel_delivery.employee_name %}
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Employee Information</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Employee Name:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.employee_name }}</span>
+              </div>
+              {% if fuel_delivery.delivery_date %}
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Delivery Date:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.delivery_date.strftime('%Y-%m-%d %H:%M') }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Vehicle Information -->
+          <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Vehicle Information</h3>
+            <div class="space-y-2">
+              {% if fuel_delivery.job_card.car %}
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Car:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.car.model }} ({{ fuel_delivery.job_card.car.registration_number }})</span>
+              </div>
+              {% endif %}
+              {% if fuel_delivery.job_card.trailer %}
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Trailer:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.trailer.model }} ({{ fuel_delivery.job_card.trailer.registration_number }})</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Cargo Information -->
+          {% if fuel_delivery.job_card.cargo_description or fuel_delivery.job_card.cargo_weight %}
+          <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Cargo Information</h3>
+            <div class="space-y-2">
+              {% if fuel_delivery.job_card.cargo_description %}
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Description:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.cargo_description }}</span>
+              </div>
+              {% endif %}
+              {% if fuel_delivery.job_card.cargo_weight %}
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-600">Weight:</span>
+                <span class="text-sm font-medium">{{ fuel_delivery.job_card.cargo_weight }} kg</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Notes -->
+          {% if fuel_delivery.notes %}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Delivery Notes</h3>
+            <p class="text-sm text-gray-700">{{ fuel_delivery.notes }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Photos and Documents -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">Photos & Documents</h2>
+        
+        <div class="space-y-6">
+          <!-- Meter Reading Photo -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">
+              <i class="fas fa-camera mr-2 text-blue-600"></i>
+              Meter Reading Photo
+            </h3>
+            {% if fuel_delivery.photo_filename %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-white">
+              <div class="relative group">
+                <img src="{{ url_for('static', filename='uploads/meter_readings/' + fuel_delivery.photo_filename) }}" 
+                     alt="Meter Reading" 
+                     class="w-full h-64 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                     onclick="openImageModal(this.src, 'Meter Reading Photo')">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 rounded-lg flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-search-plus text-white text-2xl"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-xs text-gray-500">{{ fuel_delivery.photo_filename }}</p>
+                <span class="text-xs text-green-600 font-medium">✓ Verified</span>
+              </div>
+            </div>
+            {% else %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div class="flex items-center justify-center h-32">
+                <i class="fas fa-image text-4xl text-gray-300"></i>
+              </div>
+              <p class="text-sm text-gray-500 text-center mt-2">No photo available</p>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Employee Signature -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">
+              <i class="fas fa-signature mr-2 text-green-600"></i>
+              Employee Signature
+            </h3>
+            {% if fuel_delivery.signature_filename %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-white">
+              <div class="relative group">
+                <img src="{{ url_for('static', filename='uploads/meter_readings/' + fuel_delivery.signature_filename) }}" 
+                     alt="Employee Signature" 
+                     class="w-full h-32 object-contain rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                     onclick="openImageModal(this.src, 'Employee Signature')">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 rounded-lg flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-search-plus text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-xs text-gray-500">{{ fuel_delivery.signature_filename }}</p>
+                <span class="text-xs text-green-600 font-medium">✓ Verified</span>
+              </div>
+            </div>
+            {% else %}
+            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div class="flex items-center justify-center h-32">
+                <i class="fas fa-signature text-4xl text-gray-300"></i>
+              </div>
+              <p class="text-sm text-gray-500 text-center mt-2">No signature available</p>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Download Actions -->
+          <div class="space-y-2">
+            {% if fuel_delivery.photo_filename %}
+            <a href="{{ url_for('static', filename='uploads/meter_readings/' + fuel_delivery.photo_filename) }}" 
+               download
+               class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center justify-center">
+              <i class="fas fa-download mr-2"></i>Download Photo
+            </a>
+            {% endif %}
+            
+            {% if fuel_delivery.signature_filename %}
+            <a href="{{ url_for('static', filename='uploads/meter_readings/' + fuel_delivery.signature_filename) }}" 
+               download
+               class="w-full bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center justify-center">
+              <i class="fas fa-download mr-2"></i>Download Signature
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Image Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center">
+  <div class="relative max-w-4xl max-h-full mx-4">
+    <div class="bg-white rounded-lg shadow-xl">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 id="modalTitle" class="text-lg font-semibold text-gray-900"></h3>
+        <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-4">
+        <img id="modalImage" src="" alt="" class="w-full h-auto max-h-96 object-contain rounded">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openImageModal(src, title) {
+  document.getElementById('modalImage').src = src;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('imageModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+  document.getElementById('imageModal').classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+document.getElementById('imageModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeImageModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeImageModal();
+  }
+});
+</script>
+{% endblock %} 

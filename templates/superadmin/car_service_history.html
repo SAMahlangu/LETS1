@@ -1,0 +1,279 @@
+{% extends "_base.html" %}
+
+{% block title %}Service History - {{ car.model }} - KFactor{% endblock %}
+
+{% block content %}
+
+  <!-- Floating Action Button -->
+  <div class="fixed bottom-6 right-8 z-50">
+    <a href="{{ url_for('superadmin_routes.add_service_record', car_id=car.id) }}" class="flex items-center justify-center w-16 h-16 bg-gradient-to-tl from-green-500 to-emerald-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group">
+      <i class="fas fa-plus text-xl"></i>
+      <span class="absolute right-20 bg-gray-800 text-white text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+        Add Service Record
+      </span>
+    </a>
+  </div>
+   
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+    <!-- Navbar -->
+    <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+      <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+        <nav>
+          <!-- breadcrumb -->
+          <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <li class="text-sm leading-normal">
+              <a class="text-white opacity-50" href="{{ url_for('superadmin_routes.manage_cars') }}">Cars</a>
+            </li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Service History</li>
+          </ol>
+          <h6 class="mb-0 font-bold text-white capitalize">{{ car.model }} - Service History</h6>
+        </nav>
+
+        <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+          <div class="flex items-center md:ml-auto md:pr-4">
+            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
+              <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
+            </div>
+          </div>
+          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+            <li class="flex items-center pl-4 xl:hidden">
+              <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
+                <div class="w-4.5 overflow-hidden">
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                </div>
+              </a>
+            </li>
+            <li class="flex items-center px-4">
+              <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
+                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-full px-6 py-6 mx-auto">
+              
+        <!-- Service History Section -->
+        <div class="flex flex-wrap -mx-3">
+          <!-- Service History List Card -->
+          <div class="w-full max-w-full px-3 mt-6 lg:w-2/3 lg:flex-none">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+              <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+                <div class="flex flex-wrap -mx-3">
+                  <div class="w-full max-w-full px-3 flex-0">
+                    <h6 class="mb-0 font-bold dark:text-white">Service History</h6>
+                    <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                      Maintenance and service records for {{ car.model }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-auto p-4">
+                <div class="overflow-x-auto">
+                  <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                    <thead class="align-bottom">
+                      <tr>
+                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Service Date
+                        </th>
+                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Description</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Service Provider</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Cost</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                          Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if service_history %}
+                        {% for service in service_history %}
+                        <tr>
+                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex px-2 py-1">
+                              <div class="flex flex-col justify-center">
+                                <h6 class="mb-0 text-sm leading-normal dark:text-white">{{ service.service_date.strftime('%d %b %Y') if service.service_date else 'N/A' }}</h6>
+                                <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60 text-slate-400">
+                                  {{ service.created_at.strftime('%d %b %Y') if service.created_at else '' }}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">{{ service.description or 'N/A' }}</p>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">{{ service.service_provider or 'N/A' }}</p>
+                          </td>
+                          <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
+                              {% if service.cost %}
+                                R{{ "%.2f"|format(service.cost) }}
+                              {% else %}
+                                N/A
+                              {% endif %}
+                            </p>
+                          </td>
+                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex space-x-2 justify-center">
+                              <button class="text-xs font-semibold leading-tight text-blue-500 hover:text-blue-700 transition-colors">
+                                <i class="fas fa-pencil text-xs" aria-hidden="true"></i>
+                              </button>
+                              <button class="text-xs font-semibold leading-tight text-red-500 hover:text-red-700 transition-colors">
+                                <i class="fas fa-trash text-xs" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      {% else %}
+                        <tr>
+                          <td colspan="5" class="p-4 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <div class="flex flex-col items-center justify-center py-8">
+                              <i class="fas fa-tools text-4xl text-slate-300 mb-4"></i>
+                              <p class="text-slate-500 dark:text-white dark:opacity-60">No service records found</p>
+                              <p class="text-xs text-slate-400 mt-2">Add service records to see them here</p>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Car Info & Statistics Card -->
+          <div class="w-full max-w-full px-3 mt-6 lg:w-1/3 lg:flex-none">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid border-transparent rounded-2xl bg-clip-border shadow-soft-xl">
+              <div class="p-4 pb-0 mb-0 bg-white border-b-0 rounded-t-2xl">
+                <div class="flex flex-wrap -mx-3">
+                  <div class="w-full max-w-full px-3 flex-0">
+                    <h6 class="mb-0 font-bold dark:text-white">Car Information</h6>
+                    <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                      Vehicle details and service statistics
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-auto p-4">
+                <div class="space-y-6">
+                  <!-- Car Details -->
+                  <div class="p-4 bg-gradient-to-tl from-blue-500 to-violet-500 rounded-lg text-white">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-car text-xl"></i>
+                      </div>
+                      <div>
+                        <h6 class="text-lg font-bold">{{ car.model }}</h6>
+                        <p class="text-sm opacity-80">{{ car.registration_number }}</p>
+                      </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p class="opacity-80">Year</p>
+                        <p class="font-semibold">{{ car.year or 'N/A' }}</p>
+                      </div>
+                      <div>
+                        <p class="opacity-80">Fuel Type</p>
+                        <p class="font-semibold">{{ car.fuel_type or 'N/A' }}</p>
+                      </div>
+                      <div>
+                        <p class="opacity-80">Capacity</p>
+                        <p class="font-semibold">{{ car.capacity or 'N/A' }} tons</p>
+                      </div>
+                      <div>
+                        <p class="opacity-80">Status</p>
+                        <p class="font-semibold">{% if car.is_active %}Active{% else %}Inactive{% endif %}</p>
+                      </div>
+                    </div>
+                  </div>
+      
+                  <!-- Service Statistics -->
+                  <div class="space-y-4">
+                    <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Service Statistics</h6>
+                    
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-tools text-blue-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Total Services</span>
+                      </div>
+                      <span class="text-lg font-bold text-slate-700 dark:text-white">{{ service_history|length if service_history else 0 }}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-money-bill text-green-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Total Cost</span>
+                      </div>
+                      <span class="text-lg font-bold text-slate-700 dark:text-white">
+                        {% if service_history %}
+                          R{{ "%.2f"|format(service_history|selectattr('cost')|sum(attribute='cost') or 0) }}
+                        {% else %}
+                          R0.00
+                        {% endif %}
+                      </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-calendar text-orange-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Last Service</span>
+                      </div>
+                      <span class="text-sm font-semibold text-slate-700 dark:text-white">
+                        {% if service_history %}
+                          {{ service_history[0].service_date.strftime('%d %b %Y') if service_history[0].service_date else 'N/A' }}
+                        {% else %}
+                          N/A
+                        {% endif %}
+                      </span>
+                    </div>
+                  </div>
+      
+                  <!-- Quick Actions -->
+                  <div class="space-y-3">
+                    <h6 class="text-sm font-semibold text-slate-700 dark:text-white">Quick Actions</h6>
+                    
+                    <a href="{{ url_for('superadmin_routes.add_service_record', car_id=car.id) }}" class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-plus text-green-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Add Service Record</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
+                    </a>
+      
+                    <a href="{{ url_for('superadmin_routes.manage_cars') }}" class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <i class="fas fa-arrow-left text-blue-600 text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-slate-700 dark:text-white">Back to Cars</span>
+                      </div>
+                      <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+{% endblock %} 

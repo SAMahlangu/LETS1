@@ -1,0 +1,283 @@
+{% extends "_base_admin.html" %}
+
+{% block content %}
+<main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <!-- Navbar -->
+  <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+    <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+      <nav>
+        <!-- breadcrumb -->
+        <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+          <li class="text-sm leading-normal">
+            <a class="text-white opacity-50" href="javascript:;">Pages</a>
+          </li>
+          <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Dashboard</li>
+        </ol>
+        <h6 class="mb-0 font-bold text-white capitalize">Admin Dashboard</h6>
+      </nav>
+    </div>
+  </nav>
+
+  <div class="w-full px-6 py-6 mx-auto">
+    <!-- row 1 -->
+    <div class="flex flex-wrap -mx-3">
+      <!-- card1 -->
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Total Job Cards</p>
+                  <h5 class="mb-2 font-bold dark:text-white">{{ stats.total_jobs|default(0) }}</h5>
+                  <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60">
+                    <span class="font-bold leading-normal text-emerald-500">+3%</span>
+                    since last month
+                  </p>
+                </div>
+              </div>
+              <div class="w-4/12 max-w-full text-right px-3">
+                <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
+                  <i class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Drivers -->
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Active Drivers</p>
+                  <h5 class="mb-2 font-bold dark:text-white">{{ stats.active_drivers|default(0) }}</h5>
+                  <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60">
+                    <span class="font-bold leading-normal text-emerald-500">+1%</span>
+                    since last month
+                  </p>
+                </div>
+              </div>
+              <div class="w-4/12 max-w-full text-right px-3">
+                <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-rose-400">
+                  <i class="ni leading-none ni-world text-lg relative top-3.5 text-white"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Available Vehicles -->
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Available Vehicles</p>
+                  <h5 class="mb-2 font-bold dark:text-white">{{ stats.available_vehicles|default(0) }}</h5>
+                  <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60">
+                    <span class="font-bold leading-normal text-emerald-500">+5%</span>
+                    since last month
+                  </p>
+                </div>
+              </div>
+              <div class="w-4/12 max-w-full text-right px-3">
+                <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400">
+                  <i class="ni leading-none ni-cart text-lg relative top-3.5 text-white"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Deliveries -->
+      <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+          <div class="flex-auto p-4">
+            <div class="flex flex-row -mx-3">
+              <div class="flex-none w-2/3 max-w-full px-3">
+                <div>
+                  <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Completed Deliveries</p>
+                  <h5 class="mb-2 font-bold dark:text-white">{{ stats.completed_deliveries|default(0) }}</h5>
+                  <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-60">
+                    <span class="font-bold leading-normal text-emerald-500">+8%</span>
+                    since last month
+                  </p>
+                </div>
+              </div>
+              <div class="w-4/12 max-w-full text-right px-3">
+                <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-orange-500 to-yellow-500">
+                  <i class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Job Cards -->
+    <div class="flex flex-wrap mt-6 -mx-3">
+      <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <h6 class="capitalize dark:text-white">Recent Job Cards</h6>
+            <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+              <i class="fa fa-arrow-up text-emerald-500"></i>
+              <span class="font-semibold">Latest job cards</span> in the system
+            </p>
+          </div>
+          <div class="flex-auto p-4">
+            <div class="space-y-4">
+              {% for job in recent_jobs %}
+              <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ job.job_number }}</h3>
+                    <p class="text-sm text-gray-600">{{ job.pickup_location }} → {{ job.delivery_location }}</p>
+                    <p class="text-xs text-gray-500">Created: {{ job.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="px-3 py-1 text-xs rounded-full 
+                      {% if job.status == 'assigned' %}bg-blue-100 text-blue-800
+                      {% elif job.status == 'in_progress' %}bg-yellow-100 text-yellow-800
+                      {% elif job.status == 'in_transit' %}bg-purple-100 text-purple-800
+                      {% elif job.status == 'delivered' %}bg-green-100 text-green-800
+                      {% else %}bg-gray-100 text-gray-800{% endif %}">
+                      {{ job.status|replace('_', ' ')|title }}
+                    </span>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      View Details
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="w-full max-w-full px-3 mt-6 lg:w-5/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <h6 class="capitalize dark:text-white">Quick Actions</h6>
+            <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+              <i class="fa fa-arrow-up text-emerald-500"></i>
+              <span class="font-semibold">Common tasks</span> for administrators
+            </p>
+          </div>
+          <div class="flex-auto p-4">
+            <div class="space-y-3">
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-plus mr-3 text-blue-600"></i>
+                Create New Job Card
+              </a>
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-users mr-3 text-green-600"></i>
+                Manage Drivers
+              </a>
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-truck mr-3 text-orange-600"></i>
+                Vehicle Management
+              </a>
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-building mr-3 text-purple-600"></i>
+                Company Management
+              </a>
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-gas-pump mr-3 text-red-600"></i>
+                Fuel Deliveries
+              </a>
+              <a href="#" class="flex items-center p-3 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-chart-bar mr-3 text-indigo-600"></i>
+                Reports & Analytics
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Overview -->
+    <div class="flex flex-wrap mt-6 -mx-3">
+      <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <h6 class="capitalize dark:text-white">Job Status Overview</h6>
+            <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+              <i class="fa fa-arrow-up text-emerald-500"></i>
+              <span class="font-semibold">Current status</span> of all job cards
+            </p>
+          </div>
+          <div class="flex-auto p-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600">{{ status_counts.assigned|default(0) }}</div>
+                <div class="text-sm text-blue-800">Assigned</div>
+              </div>
+              <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                <div class="text-2xl font-bold text-yellow-600">{{ status_counts.in_progress|default(0) }}</div>
+                <div class="text-sm text-yellow-800">In Progress</div>
+              </div>
+              <div class="text-center p-4 bg-purple-50 rounded-lg">
+                <div class="text-2xl font-bold text-purple-600">{{ status_counts.in_transit|default(0) }}</div>
+                <div class="text-sm text-purple-800">In Transit</div>
+              </div>
+              <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-2xl font-bold text-green-600">{{ status_counts.delivered|default(0) }}</div>
+                <div class="text-sm text-green-800">Delivered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Alerts -->
+      <div class="w-full max-w-full px-3 mt-6 lg:w-5/12 lg:flex-none">
+        <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+          <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+            <h6 class="capitalize dark:text-white">System Alerts</h6>
+            <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+              <i class="fa fa-arrow-up text-emerald-500"></i>
+              <span class="font-semibold">Important notifications</span> and alerts
+            </p>
+          </div>
+          <div class="flex-auto p-4">
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-yellow-50 rounded-lg">
+                <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                <div>
+                  <div class="text-sm font-medium text-yellow-800">Vehicle Maintenance Due</div>
+                  <div class="text-xs text-yellow-600">3 vehicles require service</div>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                <div>
+                  <div class="text-sm font-medium text-blue-800">New Job Cards</div>
+                  <div class="text-xs text-blue-600">5 new assignments created</div>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                <div>
+                  <div class="text-sm font-medium text-green-800">Deliveries Completed</div>
+                  <div class="text-xs text-green-600">12 deliveries finished today</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %} 
