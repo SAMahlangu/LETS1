@@ -42,30 +42,6 @@ def logout():
 
 ############### End Login ################
 
-############### Staet SuperAdmin ################
-@routes.route("/super_admin")
-@login_required
-def super_admin_dashboard():
-    if not current_user.role == "super_admin":
-        return redirect(url_for("routes.index"))
-    return render_template("superadmin/dashboard.html")
-
-@routes.route("/super_admin/users")
-@login_required
-def super_admin_users():
-    if current_user.role != "super_admin":
-        return redirect(url_for("routes.index"))
-    # Logic to fetch and display users
-    users = User.query.all()
-    return render_template("superadmin/manage_users.html", users=users)
-
-@routes.route("/super_admin/settings")
-@login_required
-def super_admin_settings():
-    if current_user.role != "super_admin":
-        return redirect(url_for("routes.index"))
-    return render_template("superadmin/settings.html")
-
 
 ############### End SuperAdmin ################
 
