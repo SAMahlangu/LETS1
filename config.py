@@ -1,0 +1,2 @@
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://4543300_root:KsmLjPmm694!@pdb1035.awardspace.net/4543300_root"
+SQLALCHEMY_TRACK_MODIFICATIONS = False
